@@ -119,7 +119,7 @@ contract("When testing AKAP, it:", async accounts => {
         await failingAwait(instance.ownerOf(nodeHash));
     });
 
-    it("should not be possible to use labels within limits", async () => {
+    it("should only be possible to use labels within limits", async () => {
         let instance = await akap.deployed();
 
         let minLength = 1;
