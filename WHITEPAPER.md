@@ -109,6 +109,7 @@ Nodes may hold the following attributes:
 *   SeeAlso: An optional identifier to another node.
 *   SeeAddress: An optional Ethereum address value.
 *   NodeBody: An optional application specific region of bytes.
+*   TokenURI: An optional token URI.
 
 As mentioned, both parent and node identifiers are set at node creation. These remain immutable from there on. We’ll focus on how these are defined later in the implementation section of this paper.
 
