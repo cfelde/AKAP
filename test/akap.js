@@ -86,10 +86,12 @@ contract("When testing AKAP, it:", async accounts => {
         await instance.setSeeAlso(nodeHash, 0x1);
         await instance.setSeeAddress(nodeHash, accounts[1]);
         await instance.setNodeBody(nodeHash, [0x1, 0x2, 0x3]);
+        await instance.setTokenURI(nodeHash, "akap://abc");
 
         assert.equal(0x1, await instance.seeAlso(nodeHash));
         assert.equal(accounts[1], await instance.seeAddress(nodeHash));
         assert.equal(0x010203, await instance.nodeBody(nodeHash));
+        assert.equal("akap://abc", await instance.tokenURI(nodeHash));
     });
 
     it("should be possible for owners to reclaim without changing any node attributes", async () => {
