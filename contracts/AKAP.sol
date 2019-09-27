@@ -24,7 +24,6 @@ contract AKAP is ERC721Full {
         uint seeAlso;
         address seeAddress;
         bytes nodeBody;
-        string tokenURI;
     }
 
     mapping (uint => Node) public nodes;
@@ -119,7 +118,6 @@ contract AKAP is ERC721Full {
     }
 
     function setTokenURI(uint nodeId, string calldata uri) external onlyApproved(nodeId) {
-        nodes[nodeId].tokenURI = uri;
         _setTokenURI(nodeId, uri);
     }
 }
