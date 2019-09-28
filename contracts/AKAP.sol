@@ -116,4 +116,8 @@ contract AKAP is ERC721Full {
     function setNodeBody(uint nodeId, bytes calldata value) external onlyApproved(nodeId) {
         nodes[nodeId].nodeBody = value;
     }
+
+    function setTokenURI(uint nodeId, string calldata uri) external onlyApproved(nodeId) {
+        _setTokenURI(nodeId, uri);
+    }
 }
