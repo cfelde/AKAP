@@ -26,6 +26,9 @@ contract AKAP is ERC721Full {
         bytes nodeBody;
     }
 
+    event NodeClaim(address indexed _sender, uint256 indexed _nodeId, uint _parentId, bytes _label);
+    event NodeChange(address indexed _sender, uint256 _nodeId);
+
     mapping (uint => Node) public nodes;
 
     constructor() ERC721Full("AKA Protocol Registry", "AKAP") public {}
@@ -65,12 +68,14 @@ contract AKAP is ERC721Full {
         if (_exists(nodeId) && _isApprovedOrOwner(_msgSender(), nodeId)) {
             // Caller is current owner/approved, extend lease..
             nodes[nodeId].expiry = now + 52 weeks;
+            emit NodeClaim(_msgSender(), nodeId, parentId, label);
 
             return 1;
         } else if (!_exists(nodeId)) {
             // Node does not exist, allocate to caller..
             _mint(_msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
+            emit NodeClaim(_msgSender(), nodeId, parentId, label);
 
             return 2;
         } else if (nodes[nodeId].expiry < now) {
@@ -107,17 +112,21 @@ contract AKAP is ERC721Full {
 
     function setSeeAlso(uint nodeId, uint value) external onlyApproved(nodeId) {
         nodes[nodeId].seeAlso = value;
+        emit NodeChange(_msgSender(), nodeId);
     }
 
     function setSeeAddress(uint nodeId, address value) external onlyApproved(nodeId) {
         nodes[nodeId].seeAddress = value;
+        emit NodeChange(_msgSender(), nodeId);
     }
 
     function setNodeBody(uint nodeId, bytes calldata value) external onlyApproved(nodeId) {
         nodes[nodeId].nodeBody = value;
+        emit NodeChange(_msgSender(), nodeId);
     }
 
     function setTokenURI(uint nodeId, string calldata uri) external onlyApproved(nodeId) {
         _setTokenURI(nodeId, uri);
+        emit NodeChange(_msgSender(), nodeId);
     }
 }
