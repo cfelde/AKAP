@@ -27,7 +27,7 @@ contract AKAP is ERC721Full {
     }
 
     event NodeClaim(address indexed _sender, uint256 indexed _nodeId, uint _parentId, bytes _label);
-    event NodeChange(address indexed _sender, uint256 _nodeId);
+    event NodeChange(address indexed _sender, uint256 indexed _nodeId);
 
     mapping (uint => Node) public nodes;
 
