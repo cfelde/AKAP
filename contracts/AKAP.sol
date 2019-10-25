@@ -59,11 +59,23 @@ contract AKAP is ERC721Full {
     }
 
     function claim(uint parentId, bytes calldata label) external returns (uint status) {
-        // Make sure parent is the special root parent or caller is owner of/approved on parent
-        require(parentId == 0x0 || _isApprovedOrOwner(_msgSender(), parentId), "AKAP: invalid parent ownership");
+        // Claim logic is as follows:
+
+        // Case 1:
+        // A node that does exist can be extended if the _msgSender() is the owner of nodeId.
+
+        // Case 2:
+        // A node that does not exist can be claimed if the _msgSender() is the owner of parentId.
+        // If parentId is the special case 0x0, you can consider the _msgSender() as the "owner" of parentId.
+
+        // Case 3:
+        // A node that does exists but is expired will be transferred to the new _msgSender(). This still
+        // assumed that the _msgSender() is the parentId owner, including special case 0x0 as above.
 
         // Get hash/id of the node caller is claiming
         uint nodeId = hashOf(parentId, label);
+
+        bool isParentOwner = parentId == 0x0 || _isApprovedOrOwner(_msgSender(), parentId);
 
         if (_exists(nodeId) && _isApprovedOrOwner(_msgSender(), nodeId)) {
             // Caller is current owner/approved, extend lease..
@@ -71,14 +83,14 @@ contract AKAP is ERC721Full {
             emit NodeClaim(_msgSender(), nodeId, parentId, label);
 
             return 1;
-        } else if (!_exists(nodeId)) {
+        } else if (!_exists(nodeId) && isParentOwner) {
             // Node does not exist, allocate to caller..
             _mint(_msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
             emit NodeClaim(_msgSender(), nodeId, parentId, label);
 
             return 2;
-        } else if (nodes[nodeId].expiry < now) {
+        } else if (_exists(nodeId) && nodes[nodeId].expiry < now && isParentOwner) {
             // Node exists and is expired, allocate to caller and extend lease..
             _transferFrom(ownerOf(nodeId), _msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
@@ -108,6 +120,10 @@ contract AKAP is ERC721Full {
 
     function nodeBody(uint nodeId) external view onlyExisting(nodeId) returns (bytes memory) {
         return nodes[nodeId].nodeBody;
+    }
+
+    function expireNode(uint nodeId) external onlyApproved(nodeId) {
+        nodes[nodeId].expiry = now;
     }
 
     function setSeeAlso(uint nodeId, uint value) external onlyApproved(nodeId) {
