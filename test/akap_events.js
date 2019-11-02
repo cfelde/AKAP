@@ -19,25 +19,25 @@ const akap = artifacts.require("AKAP");
 
 contract("When testing AKAP, it:", async accounts => {
 
-    it("Should emit Claim event when an owner claims a root node", async () => {
+    it("should emit a Claim event of type ClaimCase.NEW when an owner claims a root node", async () => {
         // This is a case 2 test with special case parent..
         let instance = await akap.deployed();
         let nodeHash = await instance.hashOf(0x0, [0x1]);
 
         let receipt  = await instance.claim(0x0, [0x1]);
 
-        let args = { sender: accounts[0].toString(), nodeId: nodeHash.toString(), parentId: "0", label: "0x01" };
+        let args = { sender: accounts[0].toString(), nodeId: nodeHash.toString(), parentId: "0", label: "0x01", claimCase: "1" };
         await expectEvent.inLogs( receipt.logs, "Claim", args );
     });
 
-    it("should emit a Reclaim event when owners relcaim existing node", async () => {
+    it("should emit a Claim of type ClaimCase.RECLAIM event when owners claim existing node", async () => {
         // This is a case 1 test with special case parent..
         let instance = await akap.deployed();
         let nodeHash = await instance.hashOf(0x0, [0x1]);
 
         let receipt  = await instance.claim(0x0, [0x1]);
-        let args = { sender: accounts[0].toString(), nodeId: nodeHash.toString(), parentId: "0", label: "0x01" };
-        await expectEvent.inLogs( receipt.logs, "Reclaim", args );
+        let args = { sender: accounts[0].toString(), nodeId: nodeHash.toString(), parentId: "0", label: "0x01", claimCase: "0" };
+        await expectEvent.inLogs( receipt.logs, "Claim", args );
     });
 
     it("should emit AttributeChanged event when a node attribute is updated", async () => {

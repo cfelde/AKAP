@@ -26,10 +26,10 @@ contract AKAP is ERC721Full {
         bytes nodeBody;
     }
 
+    enum ClaimCase {RECLAIM,NEW,TRANSFER}
     enum NodeAttribute {EXPIRY, SEE_ALSO, SEE_ADDRESS, NODE_BODY,TOKEN_URI}
 
-    event Claim(address indexed sender, uint256 indexed nodeId, uint indexed parentId, bytes label);
-    event Reclaim(address indexed sender, uint256 indexed nodeId, uint indexed parentId, bytes label);
+    event Claim(address indexed sender, uint256 indexed nodeId, uint indexed parentId, bytes label, ClaimCase claimCase);
     event AttributeChanged(address indexed sender, uint256 indexed nodeId, NodeAttribute attribute);
 
     mapping (uint => Node) public nodes;
@@ -83,20 +83,21 @@ contract AKAP is ERC721Full {
         if (_exists(nodeId) && _isApprovedOrOwner(_msgSender(), nodeId)) {
             // Caller is current owner/approved, extend lease..
             nodes[nodeId].expiry = now + 52 weeks;
-            emit Reclaim(_msgSender(), nodeId, parentId, label);
+            emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.RECLAIM);
 
             return 1;
         } else if (!_exists(nodeId) && isParentOwner) {
             // Node does not exist, allocate to caller..
             _mint(_msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
-            emit Claim(_msgSender(), nodeId, parentId, label);
+            emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.NEW);
 
             return 2;
         } else if (_exists(nodeId) && nodes[nodeId].expiry < now && isParentOwner) {
             // Node exists and is expired, allocate to caller and extend lease..
             _transferFrom(ownerOf(nodeId), _msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
+            emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.TRANSFER);
 
             return 3;
         }
