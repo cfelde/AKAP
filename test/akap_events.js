@@ -13,9 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const { expectEvent, BN } = require('@openzeppelin/test-helpers');
+const { expectEvent } = require('@openzeppelin/test-helpers');
 
 const akap = artifacts.require("AKAP");
+
+// TODO: Move this to a common util
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 contract("When testing AKAP, it:", async accounts => {
 
@@ -60,5 +65,25 @@ contract("When testing AKAP, it:", async accounts => {
          args["attribute"] = "4"; // NodeAttribute.TOKEN_URI
          await expectEvent.inLogs( receipt.logs, "AttributeChanged", args );
      });
+
+    it("should emit a Claim of type ClaimCase.TRANSFER event when owners claim existing node", async () => {
+        // Test case 3 emits ClaimCasse.TRANSFER event
+        let instance = await akap.deployed();
+        let parentHash = await instance.hashOf(0x0, [0x1]);
+        let nodeHash = await instance.hashOf(parentHash, [0x2]);
+
+        await instance.claim(parentHash, [0x2]);
+        await instance.transferFrom(accounts[0], accounts[1], nodeHash);
+
+        let receipt = await instance.claim(parentHash, [0x2]);
+        assert.equal(0, receipt.logs.length, "No events should be emitted, expect empty logs.");
+
+        await instance.expireNode(nodeHash, {from: accounts[1]});
+        await sleep(600); // Wait a moment for node to expire
+        receipt = await instance.claim(parentHash, [0x2]);
+
+        let args = { sender: accounts[0].toString(), nodeId: nodeHash.toString(), parentId: parentHash.toString(), label: "0x02", claimCase: "2" };
+        await expectEvent.inLogs( receipt.logs, "Claim", args );
+    });
 
 });
