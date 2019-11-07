@@ -284,13 +284,25 @@ contract("When testing AKAP, it:", async accounts => {
         let minLength = 1;
         let maxLength = 32;
 
-        await failingAwait(instance.claim(0x0, Array.apply(null, Array(minLength - 1)).map(function (x, i) { return i + 10; }), {from: accounts[1]}));
-        await failingAwait(instance.claim(0x0, Array.apply(null, Array(maxLength + 1)).map(function (x, i) { return i + 10; }), {from: accounts[1]}));
+        await failingAwait(instance.claim(0x0, Array.apply(null, Array(minLength - 1)).map(function (x, i) {
+            return i + 10;
+        }), {from: accounts[1]}));
+        await failingAwait(instance.claim(0x0, Array.apply(null, Array(maxLength + 1)).map(function (x, i) {
+            return i + 10;
+        }), {from: accounts[1]}));
 
-        instance.claim(0x0, Array.apply(null, Array(minLength)).map(function (x, i) { return i + 10; }), {from: accounts[1]});
-        instance.claim(0x0, Array.apply(null, Array(maxLength)).map(function (x, i) { return i + 10; }), {from: accounts[1]});
+        instance.claim(0x0, Array.apply(null, Array(minLength)).map(function (x, i) {
+            return i + 10;
+        }), {from: accounts[1]});
+        instance.claim(0x0, Array.apply(null, Array(maxLength)).map(function (x, i) {
+            return i + 10;
+        }), {from: accounts[1]});
 
-        assert.equal(accounts[1], await instance.ownerOf(await instance.hashOf(0x0, Array.apply(null, Array(minLength)).map(function (x, i) { return i + 10; }), {from: accounts[1]})));
-        assert.equal(accounts[1], await instance.ownerOf(await instance.hashOf(0x0, Array.apply(null, Array(maxLength)).map(function (x, i) { return i + 10; }), {from: accounts[1]})));
+        assert.equal(accounts[1], await instance.ownerOf(await instance.hashOf(0x0, Array.apply(null, Array(minLength)).map(function (x, i) {
+            return i + 10;
+        }), {from: accounts[1]})));
+        assert.equal(accounts[1], await instance.ownerOf(await instance.hashOf(0x0, Array.apply(null, Array(maxLength)).map(function (x, i) {
+            return i + 10;
+        }), {from: accounts[1]})));
     });
 });
