@@ -21,4 +21,8 @@ you can run the usual commands:
 
 `truffle test`
 
-You might need to do `npm install @openzeppelin/contracts`
+You might need to do:
+ 
+ `npm install @openzeppelin/contracts`
+ 
+ `npm install @openzeppelin/test-helpers`

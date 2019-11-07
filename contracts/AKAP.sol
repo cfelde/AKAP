@@ -26,6 +26,12 @@ contract AKAP is ERC721Full {
         bytes nodeBody;
     }
 
+    enum ClaimCase {RECLAIM,NEW,TRANSFER}
+    enum NodeAttribute {EXPIRY, SEE_ALSO, SEE_ADDRESS, NODE_BODY,TOKEN_URI}
+
+    event Claim(address indexed sender, uint256 indexed nodeId, uint indexed parentId, bytes label, ClaimCase claimCase);
+    event AttributeChanged(address indexed sender, uint256 indexed nodeId, NodeAttribute attribute);
+
     mapping (uint => Node) public nodes;
 
     constructor() ERC721Full("AKA Protocol Registry", "AKAP") public {}
@@ -77,18 +83,21 @@ contract AKAP is ERC721Full {
         if (_exists(nodeId) && _isApprovedOrOwner(_msgSender(), nodeId)) {
             // Caller is current owner/approved, extend lease..
             nodes[nodeId].expiry = now + 52 weeks;
+            emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.RECLAIM);
 
             return 1;
         } else if (!_exists(nodeId) && isParentOwner) {
             // Node does not exist, allocate to caller..
             _mint(_msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
+            emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.NEW);
 
             return 2;
         } else if (_exists(nodeId) && nodes[nodeId].expiry < now && isParentOwner) {
             // Node exists and is expired, allocate to caller and extend lease..
             _transferFrom(ownerOf(nodeId), _msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
+            emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.TRANSFER);
 
             return 3;
         }
@@ -119,21 +128,26 @@ contract AKAP is ERC721Full {
 
     function expireNode(uint nodeId) external onlyApproved(nodeId) {
         nodes[nodeId].expiry = now;
+        emit AttributeChanged(_msgSender(), nodeId, NodeAttribute.EXPIRY);
     }
 
     function setSeeAlso(uint nodeId, uint value) external onlyApproved(nodeId) {
         nodes[nodeId].seeAlso = value;
+        emit AttributeChanged(_msgSender(), nodeId, NodeAttribute.SEE_ALSO);
     }
 
     function setSeeAddress(uint nodeId, address value) external onlyApproved(nodeId) {
         nodes[nodeId].seeAddress = value;
+        emit AttributeChanged(_msgSender(), nodeId, NodeAttribute.SEE_ADDRESS);
     }
 
     function setNodeBody(uint nodeId, bytes calldata value) external onlyApproved(nodeId) {
         nodes[nodeId].nodeBody = value;
+        emit AttributeChanged(_msgSender(), nodeId, NodeAttribute.NODE_BODY);
     }
 
     function setTokenURI(uint nodeId, string calldata uri) external onlyApproved(nodeId) {
         _setTokenURI(nodeId, uri);
+        emit AttributeChanged(_msgSender(), nodeId, NodeAttribute.TOKEN_URI);
     }
 }
