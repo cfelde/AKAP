@@ -29,8 +29,8 @@ contract AKAP is ERC721Full {
     enum ClaimCase {RECLAIM, NEW, TRANSFER}
     enum NodeAttribute {EXPIRY, SEE_ALSO, SEE_ADDRESS, NODE_BODY, TOKEN_URI}
 
-    event Claim(address indexed sender, uint256 indexed nodeId, uint indexed parentId, bytes label, ClaimCase claimCase);
-    event AttributeChanged(address indexed sender, uint256 indexed nodeId, NodeAttribute attribute);
+    event Claim(address indexed sender, uint indexed nodeId, uint indexed parentId, bytes label, ClaimCase claimCase);
+    event AttributeChanged(address indexed sender, uint indexed nodeId, NodeAttribute attribute);
 
     mapping(uint => Node) public nodes;
 

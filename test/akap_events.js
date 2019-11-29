@@ -69,7 +69,7 @@ contract("When testing AKAP events, it:", async accounts => {
         assert.equal(0, receipt.logs.length, "No events should be emitted, expect empty logs.");
 
         await instance.expireNode(nodeHash, {from: accounts[1]});
-        await sleep(600); // Wait a moment for node to expire
+        await sleep(1000); // Wait a moment for node to expire
         receipt = await instance.claim(parentHash, [0x2]);
 
         let args = {
