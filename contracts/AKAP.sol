@@ -15,9 +15,10 @@
 
 pragma solidity ^0.5.0;
 
+import "./IAKAP.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
 
-contract AKAP is ERC721Full {
+contract AKAP is IAKAP, ERC721Full {
     struct Node {
         uint parentId;
         uint expiry;
