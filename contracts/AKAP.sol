@@ -89,6 +89,7 @@ contract AKAP is ERC721Full {
         } else if (!_exists(nodeId) && isParentOwner) {
             // Node does not exist, allocate to caller..
             _mint(_msgSender(), nodeId);
+            nodes[nodeId].parentId = parentId;
             nodes[nodeId].expiry = now + 52 weeks;
             emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.NEW);
 

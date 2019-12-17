@@ -72,7 +72,7 @@ contract("When testing AKAP, it:", async accounts => {
         await instance.claim(parentHash, [0x2]);
 
         assert.equal(accounts[0], await instance.ownerOf(nodeHash));
-        assert.equal(0x0, await instance.parentOf(nodeHash));
+        assert.isTrue(parentHash.eq(await instance.parentOf(nodeHash)));
         assert.isTrue(await instance.expiryOf(nodeHash) > 0);
 
         assert.equal(0x0, await instance.seeAlso(nodeHash));
@@ -115,7 +115,7 @@ contract("When testing AKAP, it:", async accounts => {
         await instance.claim(parentHash, [0x2]);
 
         assert.equal(accounts[0], await instance.ownerOf(nodeHash));
-        assert.equal(0x0, await instance.parentOf(nodeHash));
+        assert.isTrue(parentHash.eq(await instance.parentOf(nodeHash)));
         assert.isTrue(await instance.expiryOf(nodeHash) > existingExpiry);
 
         assert.equal(0x0, await instance.seeAlso(nodeHash));
