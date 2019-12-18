@@ -80,14 +80,15 @@ contract AKAP is IAKAP, ERC721Full {
         uint nodeId = hashOf(parentId, label);
 
         bool isParentOwner = parentId == 0x0 || _isApprovedOrOwner(_msgSender(), parentId);
+        bool nodeExists = _exists(nodeId);
 
-        if (_exists(nodeId) && _isApprovedOrOwner(_msgSender(), nodeId)) {
+        if (nodeExists && _isApprovedOrOwner(_msgSender(), nodeId)) {
             // Caller is current owner/approved, extend lease..
             nodes[nodeId].expiry = now + 52 weeks;
             emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.RECLAIM);
 
             return 1;
-        } else if (!_exists(nodeId) && isParentOwner) {
+        } else if (!nodeExists && isParentOwner) {
             // Node does not exist, allocate to caller..
             _mint(_msgSender(), nodeId);
             nodes[nodeId].parentId = parentId;
@@ -95,7 +96,7 @@ contract AKAP is IAKAP, ERC721Full {
             emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.NEW);
 
             return 2;
-        } else if (_exists(nodeId) && nodes[nodeId].expiry < now && isParentOwner) {
+        } else if (nodeExists && nodes[nodeId].expiry < now && isParentOwner) {
             // Node exists and is expired, allocate to caller and extend lease..
             _transferFrom(ownerOf(nodeId), _msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
