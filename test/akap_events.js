@@ -17,10 +17,6 @@ const {expectEvent} = require('@openzeppelin/test-helpers');
 
 const akap = artifacts.require("AKAP");
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 contract("When testing AKAP events, it:", async accounts => {
 
     it("should emit a Claim event of type ClaimCase.NEW when an owner claims a node with special case parent", async () => {
@@ -103,7 +99,7 @@ contract("When testing AKAP events, it:", async accounts => {
         assert.equal(0, receipt.logs.length, "No events should be emitted, expect empty logs.");
 
         await instance.expireNode(nodeHash, {from: accounts[1]});
-        await sleep(1000); // Wait a moment for node to expire
+
         receipt = await instance.claim(0x0, [0x2]);
 
         let args = {
@@ -129,7 +125,7 @@ contract("When testing AKAP events, it:", async accounts => {
         assert.equal(0, receipt.logs.length, "No events should be emitted, expect empty logs.");
 
         await instance.expireNode(nodeHash, {from: accounts[1]});
-        await sleep(1000); // Wait a moment for node to expire
+
         receipt = await instance.claim(parentHash, [0x2]);
 
         let args = {

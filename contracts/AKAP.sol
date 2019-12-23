@@ -96,7 +96,7 @@ contract AKAP is IAKAP, ERC721Full {
             emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.NEW);
 
             return 2;
-        } else if (nodeExists && nodes[nodeId].expiry < now && isParentOwner) {
+        } else if (nodeExists && nodes[nodeId].expiry <= now && isParentOwner) {
             // Node exists and is expired, allocate to caller and extend lease..
             _transferFrom(ownerOf(nodeId), _msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
