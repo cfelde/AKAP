@@ -54,7 +54,7 @@ contract AKAP is IAKAP, ERC721Full {
     }
 
     function hashOf(uint parentId, bytes memory label) public pure returns (uint id) {
-        require(label.length >= 1 && label.length <= 32);
+        require(label.length >= 1 && label.length <= 32, "AKAP: Invalid label length");
 
         bytes32 labelHash = keccak256(label);
         bytes32 nodeId = keccak256(abi.encode(parentId, labelHash));
