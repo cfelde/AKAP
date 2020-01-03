@@ -44,9 +44,15 @@ contract("When testing AKAP, it:", async accounts => {
         await failingAwait(instance.seeAddress(nodeHash));
         await failingAwait(instance.nodeBody(nodeHash));
 
+        assert.isFalse(await instance.exists(nodeHash));
+
         await instance.claim(0x0, [0x1]);
 
+        assert.isTrue(await instance.exists(nodeHash));
+
         assert.equal(accounts[0], await instance.ownerOf(nodeHash));
+        assert.isTrue(await instance.isApprovedOrOwner(nodeHash));
+        assert.isFalse(await instance.isApprovedOrOwner(nodeHash, {from: accounts[1]}));
         assert.equal(0x0, await instance.parentOf(nodeHash));
         assert.isTrue(await instance.expiryOf(nodeHash) > 0);
 

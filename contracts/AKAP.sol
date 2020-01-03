@@ -33,7 +33,7 @@ contract AKAP is IAKAP, ERC721Full {
     event Claim(address indexed sender, uint indexed nodeId, uint indexed parentId, bytes label, ClaimCase claimCase);
     event AttributeChanged(address indexed sender, uint indexed nodeId, NodeAttribute attribute);
 
-    mapping(uint => Node) public nodes;
+    mapping(uint => Node) private nodes;
 
     constructor() ERC721Full("AKA Protocol Registry", "AKAP") public {}
 
@@ -107,6 +107,14 @@ contract AKAP is IAKAP, ERC721Full {
 
         // No action
         return 0;
+    }
+
+    function exists(uint nodeId) external view returns (bool) {
+        return _exists(nodeId);
+    }
+
+    function isApprovedOrOwner(uint nodeId) external view returns (bool) {
+        return _isApprovedOrOwner(_msgSender(), nodeId);
     }
 
     function parentOf(uint nodeId) external view onlyExisting(nodeId) returns (uint) {

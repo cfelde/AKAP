@@ -56,6 +56,30 @@ contract IAKAP {
     function claim(uint parentId, bytes calldata label) external returns (uint status);
 
     /**
+     * @dev Returns true if nodeId exists.
+     *
+     * @param nodeId Node hash ID
+     * @return True if node exists
+     */
+    function exists(uint nodeId) external view returns (bool);
+
+    /**
+     * @dev Returns whether msg.sender can transfer, claim or operate on a given node ID.
+     *
+     * @param nodeId Node hash ID
+     * @return bool True if approved or owner
+     */
+    function isApprovedOrOwner(uint nodeId) external view returns (bool);
+
+    /**
+     * @dev Gets the owner of the specified node ID.
+     *
+     * @param tokenId Node hash ID
+     * @return address Node owner address
+     */
+    function ownerOf(uint256 tokenId) public view returns (address);
+
+    /**
      * @dev Return parent hash ID for given node ID.
      *
      * @param nodeId Node hash ID
