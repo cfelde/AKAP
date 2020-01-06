@@ -27,12 +27,6 @@ contract AKAP is IAKAP, ERC721Full {
         bytes nodeBody;
     }
 
-    enum ClaimCase {RECLAIM, NEW, TRANSFER}
-    enum NodeAttribute {EXPIRY, SEE_ALSO, SEE_ADDRESS, NODE_BODY, TOKEN_URI}
-
-    event Claim(address indexed sender, uint indexed nodeId, uint indexed parentId, bytes label, ClaimCase claimCase);
-    event AttributeChanged(address indexed sender, uint indexed nodeId, NodeAttribute attribute);
-
     mapping(uint => Node) private nodes;
 
     constructor() ERC721Full("AKA Protocol Registry", "AKAP") public {}

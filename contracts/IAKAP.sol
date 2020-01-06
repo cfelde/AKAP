@@ -25,6 +25,16 @@ pragma solidity ^0.5.0;
  * @dev    Functionality related to the ERC-721 nature of nodes also available on AKAP, like transferFrom(..), etc.
  */
 contract IAKAP {
+    enum ClaimCase {RECLAIM, NEW, TRANSFER}
+    enum NodeAttribute {EXPIRY, SEE_ALSO, SEE_ADDRESS, NODE_BODY, TOKEN_URI}
+
+    event Claim(address indexed sender, uint indexed nodeId, uint indexed parentId, bytes label, ClaimCase claimCase);
+    event AttributeChanged(address indexed sender, uint indexed nodeId, NodeAttribute attribute);
+
+    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
+    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
+    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
+
     /**
      * @dev Calculate the hash of a parentId and node label.
      *
