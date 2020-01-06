@@ -59,6 +59,8 @@ contract AKAP is IAKAP, ERC721Full {
         bytes32 labelHash = keccak256(label);
         bytes32 nodeId = keccak256(abi.encode(parentId, labelHash));
 
+        require(nodeId > 0, "AKAP: Invalid node hash");
+
         return uint(nodeId);
     }
 
@@ -83,6 +85,8 @@ contract AKAP is IAKAP, ERC721Full {
         bool nodeExists = _exists(nodeId);
 
         if (nodeExists && _isApprovedOrOwner(_msgSender(), nodeId)) {
+            require(parentId == nodes[nodeId].parentId, "AKAP: Invalid parent hash");
+
             // Caller is current owner/approved, extend lease..
             nodes[nodeId].expiry = now + 52 weeks;
             emit Claim(_msgSender(), nodeId, parentId, label, ClaimCase.RECLAIM);
@@ -97,6 +101,8 @@ contract AKAP is IAKAP, ERC721Full {
 
             return 2;
         } else if (nodeExists && nodes[nodeId].expiry <= now && isParentOwner) {
+            require(parentId == nodes[nodeId].parentId, "AKAP: Invalid parent hash");
+
             // Node exists and is expired, allocate to caller and extend lease..
             _transferFrom(ownerOf(nodeId), _msgSender(), nodeId);
             nodes[nodeId].expiry = now + 52 weeks;
