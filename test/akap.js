@@ -13,36 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+const {expectRevert} = require('@openzeppelin/test-helpers');
+
 const akap = artifacts.require("AKAP");
-
-async function failingAwait(promise) {
-    let gotEx = false;
-    try {
-        await promise;
-    } catch (ex) {
-        gotEx = true;
-    }
-
-    assert.isTrue(gotEx);
-}
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 contract("When testing AKAP, it:", async accounts => {
+
     it("should be possible to claim a node on special case root parent id", async () => {
         // This is a case 2 test with special case parent..
         let instance = await akap.deployed();
 
         let nodeHash = await instance.hashOf(0x0, [0x1]);
 
-        await failingAwait(instance.ownerOf(nodeHash));
-        await failingAwait(instance.parentOf(nodeHash));
-        await failingAwait(instance.expiryOf(nodeHash));
-        await failingAwait(instance.seeAlso(nodeHash));
-        await failingAwait(instance.seeAddress(nodeHash));
-        await failingAwait(instance.nodeBody(nodeHash));
+        await expectRevert(instance.ownerOf(nodeHash), "ERC721: owner query for nonexistent token");
+        await expectRevert(instance.parentOf(nodeHash), "AKAP: operator query for nonexistent node");
+        await expectRevert(instance.expiryOf(nodeHash), "AKAP: operator query for nonexistent node");
+        await expectRevert(instance.seeAlso(nodeHash), "AKAP: operator query for nonexistent node");
+        await expectRevert(instance.seeAddress(nodeHash), "AKAP: operator query for nonexistent node");
+        await expectRevert(instance.nodeBody(nodeHash), "AKAP: operator query for nonexistent node");
 
         assert.isFalse(await instance.exists(nodeHash));
 
@@ -68,12 +60,12 @@ contract("When testing AKAP, it:", async accounts => {
         let parentHash = await instance.hashOf(0x0, [0x1]);
         let nodeHash = await instance.hashOf(parentHash, [0x2]);
 
-        await failingAwait(instance.ownerOf(nodeHash));
-        await failingAwait(instance.parentOf(nodeHash));
-        await failingAwait(instance.expiryOf(nodeHash));
-        await failingAwait(instance.seeAlso(nodeHash));
-        await failingAwait(instance.seeAddress(nodeHash));
-        await failingAwait(instance.nodeBody(nodeHash));
+        await expectRevert(instance.ownerOf(nodeHash), "ERC721: owner query for nonexistent token");
+        await expectRevert(instance.parentOf(nodeHash), "AKAP: operator query for nonexistent node");
+        await expectRevert(instance.expiryOf(nodeHash), "AKAP: operator query for nonexistent node");
+        await expectRevert(instance.seeAlso(nodeHash), "AKAP: operator query for nonexistent node");
+        await expectRevert(instance.seeAddress(nodeHash), "AKAP: operator query for nonexistent node");
+        await expectRevert(instance.nodeBody(nodeHash), "AKAP: operator query for nonexistent node");
 
         await instance.claim(parentHash, [0x2]);
 
@@ -179,9 +171,9 @@ contract("When testing AKAP, it:", async accounts => {
         let parentHash = await instance.hashOf(0x0, [0x1]);
         let nodeHash = await instance.hashOf(parentHash, [0x3]);
 
-        await failingAwait(instance.ownerOf(nodeHash));
+        await expectRevert(instance.ownerOf(nodeHash), "ERC721: owner query for nonexistent token");
         await instance.claim(parentHash, [0x3], {from: accounts[1]});
-        await failingAwait(instance.ownerOf(nodeHash));
+        await expectRevert(instance.ownerOf(nodeHash), "ERC721: owner query for nonexistent token");
     });
 
     it("should be possible for non-owners of a parent to reclaim an existing child node owned by them", async () => {
@@ -290,12 +282,12 @@ contract("When testing AKAP, it:", async accounts => {
         let minLength = 1;
         let maxLength = 32;
 
-        await failingAwait(instance.claim(0x0, Array.apply(null, Array(minLength - 1)).map(function (x, i) {
+        await expectRevert(instance.claim(0x0, Array.apply(null, Array(minLength - 1)).map(function (x, i) {
             return i + 10;
-        }), {from: accounts[1]}));
-        await failingAwait(instance.claim(0x0, Array.apply(null, Array(maxLength + 1)).map(function (x, i) {
+        }), {from: accounts[1]}), "AKAP: Invalid label length");
+        await expectRevert(instance.claim(0x0, Array.apply(null, Array(maxLength + 1)).map(function (x, i) {
             return i + 10;
-        }), {from: accounts[1]}));
+        }), {from: accounts[1]}), "AKAP: Invalid label length");
 
         instance.claim(0x0, Array.apply(null, Array(minLength)).map(function (x, i) {
             return i + 10;
@@ -311,4 +303,5 @@ contract("When testing AKAP, it:", async accounts => {
             return i + 10;
         }), {from: accounts[1]})));
     });
+
 });
