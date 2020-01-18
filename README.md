@@ -26,3 +26,17 @@ You might need to do:
  `npm install @openzeppelin/contracts`
  
  `npm install @openzeppelin/test-helpers`
+
+## Official build
+
+The "officially compiled" AKAP contract json files can be found under `build/contracts`.
+
+Compiled using below versions:
+
+Truffle v5.1.4 (core: 5.1.4)
+Solidity v0.5.12 (solc-js)
+Node v13.3.0
+Web3.js v1.2.1
+macOS Catalina v10.15.2
+
+The solc optimizer was enabled with runs = 200.
