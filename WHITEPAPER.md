@@ -2,7 +2,7 @@
 
 ## The LDAP of Ethereum
 
-**Version: Draft 1**
+**Version: Final 20200118**
 
 September 2019
 
