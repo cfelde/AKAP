@@ -47,3 +47,7 @@ macOS Catalina v10.15.2
 ```
 
 The solc optimizer was enabled with runs = 200.
+
+## AKAP UI
+
+There's a browser available on [akap.me/browser](https://akap.me/browser), and you can find the repo for this [here](https://github.com/cfelde/AKAP-browser).
