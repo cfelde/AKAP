@@ -51,3 +51,4 @@ The solc optimizer was enabled with runs = 200.
 ## AKAP UI
 
 There's a browser available on [akap.me/browser](https://akap.me/browser), and you can find the repo for this [here](https://github.com/cfelde/AKAP-browser).
+Also, if you want to see how you can get started using AKAP in your web apps, there's a simple [deploy test](https://github.com/cfelde/AKAP-deploy-test) example available.
