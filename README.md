@@ -48,7 +48,11 @@ macOS Catalina v10.15.2
 
 The solc optimizer was enabled with runs = 200.
 
-## AKAP UI
+## AKAP UI and apps
 
 There's a browser available on [akap.me/browser](https://akap.me/browser), and you can find the repo for this [here](https://github.com/cfelde/AKAP-browser).
 Also, if you want to see how you can get started using AKAP in your web apps, there's a simple [deploy test](https://github.com/cfelde/AKAP-deploy-test) example available.
+
+We're building a list of apps and similar using AKAP. If you have some examples to share, please do.
+
+[Redir.eth URL shortener](https://redir.eth), with [source code](https://github.com/mohamedelshami/AKAP-url-shortener).
