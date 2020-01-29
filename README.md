@@ -8,10 +8,14 @@ The contract is deployed and is ready for use, see below for details.
 
 Please have a read of the [white paper](WHITEPAPER.md).
 
-## Truffle commands
+## Building locally with Truffle
 
 Assuming you have [Truffle](https://www.trufflesuite.com/) installed
 you can run the usual commands:
+
+`git clone https://github.com/cfelde/AKAP.git`
+
+`cd AKAP`
 
 `truffle build`
 
