@@ -23,9 +23,17 @@ you can run the usual commands:
 
 You might need to do:
  
- `npm install @openzeppelin/contracts`
+`npm install @openzeppelin/contracts`
  
- `npm install @openzeppelin/test-helpers`
+`npm install @openzeppelin/test-helpers`
+
+## Using as a library
+
+To use this as a library in your Solidity code, install with npm first:
+
+`npm install akap`
+
+You can find an example with further details on https://github.com/cfelde/Using-AKAP
 
 ## Official build
 

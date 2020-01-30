@@ -1,0 +1,34 @@
+{
+  "name": "akap",
+  "version": "1.0.1",
+  "description": "AKA protocol, the LDAP of Ethereum",
+  "files": [
+    "/contracts/*.sol",
+    "/build/contracts/*.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cfelde/AKAP.git"
+  },
+  "keywords": [
+    "solidity",
+    "solidity-contracts",
+    "solidity-dapps",
+    "ethereum",
+    "ethereum-contract",
+    "ethereum-dapp",
+    "AKAP"
+  ],
+  "author": "Christian Felde, Mohamed Elshami",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/cfelde/AKAP/issues"
+  },
+  "homepage": "https://akap.me",
+  "devDependencies": {
+    "@openzeppelin/test-helpers": "^0.5.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "2.3.0"
+  }
+}
