@@ -1,12 +1,20 @@
 # AKAP
 
-The AKA protocol is somewhat like LDAP for Ethereum. It allows you to
-reference content and data, and also navigate structures in the context
-of nodes and a directed acyclic graph.
+The [AKA protocol](https://akap.me) (AKAP) is an idea, a specification, and a set of smart contracts written for the Ethereum blockchain. It tackles a challenge seen on blockchains related to immutability and how you write code to handle such an environment.
 
-The contract is deployed and is ready for use, see below for details.
+In short the challenge facing blockchain developers is that when they deploy code others depend on, there's no easy upgrade path. The location of the code is tied in with the location of storage, and if you want to upgrade your code you can't easily take this storage with you. Deploying a new version would force everyone who depend on it to change their references, not to mention the pain of repopulating existing data.
 
-Please have a read of the [white paper](WHITEPAPER.md).
+Eternal storage is a pattern that AKAP can help you leverage, where the idea is to keep your storage separate from your code.
+
+Please see the [documentation](https://akap.me/docs) for more in depth material.
+
+## Repositories
+
+This repository contains the AKAP registry contract. Other related repositories:
+
+[AKAP utils](https://github.com/cfelde/AKAP-utils) <br/>
+[AKAP docs](https://github.com/cfelde/AKAP-docs) <br/>
+[AKAP browser](https://github.com/cfelde/AKAP-browser) <br/>
 
 ## Building locally with Truffle
 
