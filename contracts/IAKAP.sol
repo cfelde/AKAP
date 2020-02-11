@@ -57,7 +57,7 @@ contract IAKAP {
      * If msg.sender is not the owner but is instead approved "spender" of node, the same logic applies. Only on
      * case 2 and 3 does msg.sender become owner of the node. On case 1 only the expiry is updated.
      *
-     * Whenever the return value is non-zero, the expiry of the node as been set to 52 weeks into the future.
+     * Whenever the return value is non-zero, the expiry of the node has been set to 52 weeks into the future.
      *
      * @param parentId Hash value of parent ID
      * @param label Label of node
