@@ -41,6 +41,10 @@ To use this as a library in your Solidity code, install with npm first:
 
 `npm install akap`
 
+If you need a local testnet instance of AKAP do:
+
+`truffle deploy --network development`
+
 You can find an example with further details on https://github.com/cfelde/Using-AKAP
 
 ## Official build
