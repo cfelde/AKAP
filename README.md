@@ -15,6 +15,7 @@ This repository contains the AKAP registry contract. Other related repositories:
 [AKAP utils](https://github.com/cfelde/AKAP-utils) <br/>
 [AKAP docs](https://github.com/cfelde/AKAP-docs) <br/>
 [AKAP browser](https://github.com/cfelde/AKAP-browser) <br/>
+[Using AKAP](https://github.com/cfelde/Using-AKAP) <br/>
 
 ## Building locally with Truffle
 
