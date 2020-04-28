@@ -81,3 +81,5 @@ Also, if you want to see how you can get started using AKAP in your web apps, th
 We're building a list of apps and similar using AKAP. If you have some examples to share, please do.
 
 [Redir.eth URL shortener](https://redir.eth), with [source code](https://github.com/mohamedelshami/AKAP-url-shortener).
+
+[The Million DAI Website](https://milliondai.website)
