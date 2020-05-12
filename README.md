@@ -10,7 +10,7 @@ Please see the [documentation](https://akap.me/docs) for more in depth material.
 
 ## Repositories
 
-This repository contains the AKAP registry contract. Other related repositories:
+This repository contains the AKAP and AKAF registry contracts. Other related repositories:
 
 [AKAP utils](https://github.com/cfelde/AKAP-utils) <br/>
 [AKAP docs](https://github.com/cfelde/AKAP-docs) <br/>
