@@ -42,13 +42,13 @@ contract AKAF is IAKAP, ERC721Full {
     }
 
     modifier onlyExisting(uint nodeId) {
-        require(_exists(nodeId), "AKAP: operator query for nonexistent node");
+        require(_exists(nodeId) && nodeId > 0, "AKAP: operator query for nonexistent node");
 
         _;
     }
 
     modifier onlyApproved(uint nodeId) {
-        require(_exists(nodeId) && _isApprovedOrOwner(_msgSender(), nodeId), "AKAP: set value caller is not owner nor approved");
+        require(_exists(nodeId) && _isApprovedOrOwner(_msgSender(), nodeId) && nodeId > 0, "AKAP: set value caller is not owner nor approved");
 
         _;
     }
@@ -107,7 +107,7 @@ contract AKAF is IAKAP, ERC721Full {
     }
 
     function exists(uint nodeId) external view returns (bool) {
-        return _exists(nodeId);
+        return _exists(nodeId) && nodeId > 0;
     }
 
     function isApprovedOrOwner(uint nodeId) external view returns (bool) {
